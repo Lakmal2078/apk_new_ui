@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Data backup rules for Android 12+ -->
+    <data-extraction-rules version="1">
+        <domain-backup>
+            <include domain="files" />
+            <exclude domain="cache" />
+            <exclude domain="code_cache" />
+        </domain-backup>
+    </data-extraction-rules>
+</resources>
