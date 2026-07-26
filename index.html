@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Content Security Policy (CSP) to mitigate XSS, object injection, and unsafe resource loading -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https: wss:; object-src 'none'; base-uri 'self'; form-action 'self';"
+    />
+    <!-- CSRF Protection Meta Tag -->
+    <meta name="csrf-token" id="csrf-token-meta" content="" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fast XBet Cash | Sri Lanka Cashier Bot</title>
+
+    <!-- CSRF Token Generation & Interceptor Security Script -->
+    <script>
+      (function () {
+        'use strict';
+        // 1. Generate or retrieve cryptographically secure CSRF token
+        function getOrGenerateCSRFToken() {
+          var tokenKey = 'fast_xbet_csrf_token';
+          var storedToken = sessionStorage.getItem(tokenKey);
+          if (!storedToken) {
+            var array = new Uint8Array(32);
+            window.crypto.getRandomValues(array);
+            storedToken = Array.from(array, function (byte) {
+              return ('0' + byte.toString(16)).slice(-2);
+            }).join('');
+            sessionStorage.setItem(tokenKey, storedToken);
+          }
+          return storedToken;
+        }
+
+        var csrfToken = getOrGenerateCSRFToken();
+
+        // 2. Set CSRF Token in Meta Tag once DOM is ready
+        document.addEventListener('DOMContentLoaded', function () {
+          var metaTag = document.getElementById('csrf-token-meta');
+          if (metaTag) {
+            metaTag.setAttribute('content', csrfToken);
+          }
+        });
+
+        // 3. Expose CSRF validation interface globally
+        window.CSRFProtection = {
+          getToken: function () {
+            return csrfToken;
+          },
+          validateToken: function (inputToken) {
+            return typeof inputToken === 'string' && inputToken.length > 0 && inputToken === csrfToken;
+          },
+          refreshToken: function () {
+            sessionStorage.removeItem('fast_xbet_csrf_token');
+            csrfToken = getOrGenerateCSRFToken();
+            var metaTag = document.getElementById('csrf-token-meta');
+            if (metaTag) metaTag.setAttribute('content', csrfToken);
+            return csrfToken;
+          }
+        };
+
+        // 4. Wrap window.fetch to automatically append and validate CSRF token on state-changing requests
+        var originalFetch = window.fetch;
+        window.fetch = function (resource, init) {
+          init = init || {};
+          var method = (init.method || 'GET').toUpperCase();
+          if (['POST', 'PUT', 'DELETE', 'PATCH'].indexOf(method) !== -1) {
+            init.headers = init.headers || {};
+            if (init.headers instanceof Headers) {
+              if (!init.headers.has('X-CSRF-Token')) {
+                init.headers.append('X-CSRF-Token', csrfToken);
+              }
+            } else if (Array.isArray(init.headers)) {
+              var hasHeader = init.headers.some(function (h) {
+                return h[0].toLowerCase() === 'x-csrf-token';
+              });
+              if (!hasHeader) {
+                init.headers.push(['X-CSRF-Token', csrfToken]);
+              }
+            } else {
+              if (!init.headers['X-CSRF-Token'] && !init.headers['x-csrf-token']) {
+                init.headers['X-CSRF-Token'] = csrfToken;
+              }
+            }
+          }
+          return originalFetch.call(this, resource, init);
+        };
+      })();
+    </script>
+  </head>
+  <body class="bg-[#0B0E14] text-slate-100 min-h-screen antialiased selection:bg-emerald-500 selection:text-black">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
