@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Custom attributes for your app -->
+    <attr name="customColor" format="color" />
+    <attr name="customDimension" format="dimension" />
+</resources>
