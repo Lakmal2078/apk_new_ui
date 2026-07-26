@@ -7,3 +7,24 @@ logs/
 *.sqlite-wal
 *.sqlite-shm
 .DS_Store
+
+# Gradle files
+.gradle/
+build/
+*.apk
+*.aar
+*.ap_
+*.dex
+
+# Android Studio
+.idea/
+*.iml
+*.iws
+*.ipr
+.externalNativeBuild
+.cxx/
+
+# Build outputs
+bin/
+gen/
+local.properties
